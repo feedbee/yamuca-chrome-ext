@@ -1,0 +1,46 @@
+{
+    "manifest_version": 2,
+
+    "name": "Yamuca",
+    "description": "Remote control over Yandex.Music player",
+    "version": "1.0",
+    "author": "Valera Leontyev (feedbee@gmail.com)",
+    "homepage_url": "https://github.com/feedbee/yamuca-chrome-ext",
+
+    "permissions": [
+        "activeTab",
+        "storage",
+        "declarativeContent"
+    ],
+
+    "background" : {
+        "scripts": ["background.js"],
+        "persistent": false
+    },
+
+    "content_scripts": [
+        {
+            "matches": ["*://music.yandex.ru/*", "*://music.yandex.by/*", "*://music.yandex.ua/*", "*://music.yandex.tr/*"],
+            "js": ["content-script.js"]
+        }
+    ],
+
+    "page_action": {
+        "default_title" : "This page can be remotely controlled by Yamuca",
+        "default_icon": {
+            "19": "icons/icon-19.png",
+            "38": "icons/icon-38.png"
+        }
+    },
+
+    "icons": {
+        "16": "icons/icon-16.png",
+        "48": "icons/icon-64.png",
+        "128": "icons/icon-128.png"
+    },
+
+    "options_ui": {
+        "page": "options.html",
+        "chrome_style": true
+  }
+}
