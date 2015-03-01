@@ -17,4 +17,4 @@ Get it running
 Author
 ------
 Valera Leontyev (feedbee@gmail.com).
-Send questions to this email. To report errors use [issues](https://github.com/feedbee/yamuca-server-php/issues).
+Send questions to this email. Use [issues](https://github.com/feedbee/yamuca-chrome-ext/issues) for error reporting.

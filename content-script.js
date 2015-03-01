@@ -75,7 +75,7 @@
 
                 ws = new WebSocket(credentials.server);
                 ws.onopen = function (e) {
-                    connected = true;
+                    isConnected = true;
                     chrome.extension.sendMessage("connected");
                     console.log('Yamuca: Connected');
                     ws.send(JSON.stringify({key: credentials.key}));
@@ -83,16 +83,19 @@
                 }
 
                 ws.onerror = ws.close = function (e) {
-                    connected = false;
+                    isConnected = false;
                     chrome.extension.sendMessage("disconnected");
-                    console.log('Yamuca: Error', e);
-                    tries++;
-                    if (tries < 5) {
-                        setTimeout(connect, 1000);
-                    } else {
-                        tries = 0;
-                        chrome.extension.sendMessage("giveup");
-                        console.log('Yamuca: to many errors, giving up', e);
+                    
+                    if (e) { // on error
+                        console.log('Yamuca: Error', e);
+                        tries++;
+                        if (tries < 5) {
+                            setTimeout(connect, 1000);
+                        } else {
+                            tries = 0;
+                            chrome.extension.sendMessage("giveup");
+                            console.log('Yamuca: to many errors, giving up', e);
+                        }
                     }
                 };
 
@@ -111,7 +114,7 @@
             };
 
             var disconnect = function () {
-                ws.disconnect();
+                ws.close();
             };
 
             this.connect = connect;
@@ -121,7 +124,7 @@
             }
 
             this.toggleConnectionState = function () {
-                if (connected) {
+                if (isConnected) {
                     disconnect();
                 } else {
                     connect();
