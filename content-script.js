@@ -7,18 +7,20 @@
         };
 
         Yamuca.Adapters = {};
-        Yamuca.Adapters.KeyPressEmulation = function () {
-            var triggerKeyEvent = function (key, eventType) {
-                var $document = $(document);
-                var event = jQuery.Event(eventType);
-                event.charCode = key;
-                event.target = $document[0];
-                event.type = eventType;
-                $document.trigger(event);
-            };
+        Yamuca.Adapters.KeyPressSimulation = function () {
+
+            // Inject keyboard event triggers into page context
+            // (it doesn't work properly from extension context)
+            var e = document.createElement('script');
+            e.src = 'chrome-extension://' + chrome.runtime.id + '/embedded-key-events.js';
+            document.body.appendChild(e);
+
             var sendKeyPress = function (key) {
-                triggerKeyEvent(key, "keypress");
-                triggerKeyEvent(key, "keyup");
+                var evt = document.createEvent("CustomEvent");
+                evt.initEvent("SendKeyEvents", true, true);
+                evt.detail = key;
+                document.body.setAttribute('data-yamuca-key', key);
+                document.body.dispatchEvent(evt);
             };
 
             this.togglePlay = function () {
@@ -34,7 +36,7 @@
         Yamuca.Adapters.UnityShim = function () {
             var sendActionEvent = function(action) {
                 var evt = document.createEvent("CustomEvent");
-                evt.initEvent("UnityActionEvent", true, true );
+                evt.initEvent("UnityActionEvent", true, true);
                 evt.detail = action;
                 document.body.setAttribute('data-unity-action', JSON.stringify(action));
                 document.body.dispatchEvent(evt);
@@ -137,7 +139,7 @@
             };
         };
 
-        window.Yamuca = new Yamuca(new Yamuca.Adapters.UnityShim());
+        window.Yamuca = new Yamuca(new Yamuca.Adapters.KeyPressSimulation());
         window.YamucaController = new Yamuca.Controllers.WebSocket(window.Yamuca);
 
         chrome.extension.sendMessage("loaded");

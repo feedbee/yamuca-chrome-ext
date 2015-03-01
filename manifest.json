@@ -25,6 +25,10 @@
         }
     ],
 
+    "web_accessible_resources": [
+        "embedded-key-events.js"
+    ],
+
     "page_action": {
         "default_title" : "This page can be remotely controlled by Yamuca",
         "default_icon": {
