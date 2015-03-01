@@ -22,6 +22,10 @@ Server communication protocol this extension uses is described in [README.md](ht
 - `togglePlay`
 - `next`
 - `previous`
+- `volumeUp`
+- `volumeDown`
+- `mute`
+
 
 Author
 ------

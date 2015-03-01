@@ -31,7 +31,7 @@
     };
 
     document.body.addEventListener('SendKeyEvents', function(e) {
-        var key = document.body.getAttribute('data-yamuca-key').parseInt();
+        var key = parseInt(document.body.getAttribute('data-yamuca-key'));
         sendKeyEventsPair(key);
         document.body.removeAttribute('data-yamuca-key');
     });

@@ -1,9 +1,14 @@
 (function() {
     var YamucaInit = function () {
         var Yamuca = function (adapter) {
-            this.togglePlay = adapter.togglePlay;
-            this.next = adapter.next;
-            this.previous = adapter.previous;
+            var noHandled = function () {};
+            this.togglePlay = adapter.togglePlay || noHandled;
+            this.next = adapter.next || noHandled;
+            this.previous = adapter.previous || noHandled;
+
+            this.volumeUp = adapter.volumeUp || noHandled;
+            this.volumeDown = adapter.volumeDown || noHandled;
+            this.mute = adapter.mute || noHandled;
         };
 
         Yamuca.Adapters = {};
@@ -31,6 +36,15 @@
             };
             this.previous = function () {
                 sendKeyPress(108); // l
+            };
+            this.volumeUp = function () {
+                sendKeyPress(43); // +
+            };
+            this.volumeDown = function () {
+                sendKeyPress(95); // -
+            };
+            this.mute = function () {
+                sendKeyPress(48); // 0
             };
         };
         Yamuca.Adapters.UnityShim = function () {
@@ -111,6 +125,9 @@
                             case 'togglePlay': Yamuca.togglePlay(); break;
                             case 'next': Yamuca.next(); break;
                             case 'previous': Yamuca.previous(); break;
+                            case 'volumeUp': Yamuca.volumeUp(); break;
+                            case 'volumeDown': Yamuca.volumeDown(); break;
+                            case 'mute': Yamuca.mute(); break;
                         }
                     }
                 };
