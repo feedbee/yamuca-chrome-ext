@@ -14,7 +14,22 @@ Get it running
 4. Open [Yandex.Music](http://music.yandex.ru/). Extension icon must appear in the Omnibox (in the right side of browser's address bar), it's title should be "Yamuca: connected". Launch some music.
 5. Use Next, Prev, Play/Pause buttons on the client application to control player.
 
+Protocols
+---------
+
+Server communication protocol this extension uses is described in [README.md](https://github.com/feedbee/yamuca-chrome-ext) of PHP server application. Application-level commands this extension currently supports are:
+
+- `togglePlay`
+- `next`
+- `previous`
+
 Author
 ------
+
 Valera Leontyev (feedbee@gmail.com).
 Send questions to this email. Use [issues](https://github.com/feedbee/yamuca-chrome-ext/issues) for error reporting.
+
+Development state
+-----------------
+
+Application is in development state currently.

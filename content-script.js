@@ -85,7 +85,8 @@
                 ws.onerror = ws.close = function (e) {
                     isConnected = false;
                     chrome.extension.sendMessage("disconnected");
-                    
+                    console.log('Yamuca: Disconnected');
+
                     if (e) { // on error
                         console.log('Yamuca: Error', e);
                         tries++;
