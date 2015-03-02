@@ -10,7 +10,7 @@ chrome.extension.onMessage.addListener(function (request, sender, callback) {
 
     if (message.type == 'loaded') {
         chrome.pageAction.show(sender.tab.id);
-        chrome.pageAction.setTitle({tabId: sender.tab.id, title: "This page can be remotely controlled by Yamuca"});
+        chrome.pageAction.setTitle({tabId: sender.tab.id, title: chrome.i18n.getMessage("pageActionTitleDefault")});
         
         chrome.storage.sync.get([
             "server",
@@ -20,22 +20,22 @@ chrome.extension.onMessage.addListener(function (request, sender, callback) {
             if (!data.server || !data.key) {
                 credentialsDefined = false;
                 chrome.tabs.sendMessage(sender.tab.id, {type: "credentials", credentials: null});
-                chrome.pageAction.setTitle({tabId: sender.tab.id, title: "This page can be remotely controlled by Yamuca. Click here to define credentials."});
+                chrome.pageAction.setTitle({tabId: sender.tab.id, title: chrome.i18n.getMessage("pageActionTitleDefineCredentials")});
             } else {
                 credentialsDefined = true;
                 chrome.tabs.sendMessage(sender.tab.id, {type: "credentials", credentials: data});
-                chrome.pageAction.setTitle({tabId: sender.tab.id, title: "This page can be remotely controlled by Yamuca. Click to connect to server."});
+                chrome.pageAction.setTitle({tabId: sender.tab.id, title: chrome.i18n.getMessage("pageActionTitleClickToConnect")});
             }
         });
     }
     if (message.type == 'connecting') {
-        chrome.pageAction.setTitle({tabId: sender.tab.id, title: "Yamuca: connecting..."});
+        chrome.pageAction.setTitle({tabId: sender.tab.id, title: chrome.i18n.getMessage("pageActionTitleConnecting")});
     }
     if (message.type == 'connected') {
-        chrome.pageAction.setTitle({tabId: sender.tab.id, title: "Yamuca: connected. Click to disconnect"});
+        chrome.pageAction.setTitle({tabId: sender.tab.id, title: chrome.i18n.getMessage("pageActionTitleConnected")});
     }
     if (message.type == 'disconnected') {
-        chrome.pageAction.setTitle({tabId: sender.tab.id, title: "Yamuca: disconnected. Click to try to connect again"});
+        chrome.pageAction.setTitle({tabId: sender.tab.id, title: chrome.i18n.getMessage("pageActionTitleDisconnected")});
     }
 });
 

@@ -13,34 +13,34 @@
 
   <div class="option">
     <label>
-      Server:
+      <span data-translate="optionsServer">Server</span>:
       <input id="server" type="text" size="30" placeholder="ws(s)://host:port/" />
     </label>
   </div>
 
   <div class="option">
     <label>
-      Security key: 
-      <input id="key" type="text" size="45" placeholder="something long" />
+      <span data-translate="optionsKey">Security key</span>: 
+      <input id="key" type="text" size="45" placeholder="something long" data-attr-translate="{&quote;placeholder&quote;: &quote;optionsGenerate&quote;}" />
     </label>
-    <button id="generate-key">Generate</button>
+    <button id="generate-key" data-translate="optionsGenerate">Generate</button>
   </div>
 
   <div class="option">
     <label>
       <input type="checkbox" id="autoconnect" checked="checked">
-      Connect automatically
+      <span data-translate="optionsAutoConnect">Connect automatically</span>
     </label>
   </div>
 
   <div class="option" id="qrcode-container">
-    Link to client applications:<br />
+    <span data-translate="optionsQRCodeTitle">Link to client applications</span>:<br />
     <a href="" id="client-link"><img src="" id="qrcode" alt="QR Code" height="120" width="120"
-      title="Connect client to page encoded in this QR Code" /></a>
+      title="Connect client to page encoded in this QR Code"  data-attr-translate="{&quote;title&quote;: &quote;optionsQRCodeHint&quote;}" /></a>
   </div>
 
   <div class="option">
-    <button id="save">Save</button> <span id="status"></span>
+    <button id="save" data-translate="optionsSave">Save</button> <span id="status"></span>
   </div>
 
   <script src="options.js"></script>

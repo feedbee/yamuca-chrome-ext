@@ -13,12 +13,12 @@
             // Update status to let user know othe result
             var status = document.getElementById('status');
             if (chrome.runtime.lastError) {
-                status.textContent = 'Options NOT saved, error: ' + chrome.runtime.lastError;
+                status.textContent = chrome.i18n.getMessage("optionsNotSaved", [chrome.runtime.lastError]);
                 setTimeout(function() {
                     status.textContent = '';
                 }, 2000);
             } else {
-                status.textContent = 'Options saved.';
+                status.textContent = chrome.i18n.getMessage("optionsSaved");
                 setTimeout(function() {
                     status.textContent = '';
                 }, 1000);

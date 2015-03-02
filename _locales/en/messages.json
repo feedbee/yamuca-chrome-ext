@@ -1,0 +1,59 @@
+{
+    "extName": {
+        "message": "Yamuca"
+    },
+    "extDesc": {
+        "message": "Remote control over Yandex.Music player"
+    },
+    "extAuthor": {
+        "message": "Valera Leontyev (feedbee@gmail.com)"
+    },
+    "pageActionTitleDefault": {
+        "message": "This page can be remotely controlled by Yamuca"
+    },
+    "pageActionTitleDefineCredentials": {
+        "message": "This page can be remotely controlled by Yamuca. Click here to define credentials."
+    },
+    "pageActionTitleClickToConnect": {
+        "message": "This page can be remotely controlled by Yamuca. Click to connect to server."
+    },
+    "pageActionTitleConnecting": {
+        "message": "Yamuca: connecting..."
+    },
+    "pageActionTitleConnected": {
+        "message": "Yamuca: connected. Click to disconnect"
+    },
+    "pageActionTitleDisconnected": {
+        "message": "Yamuca: disconnected. Click to try to connect again"
+    },
+    "optionsNotSaved": {
+        "message": "Options NOT saved, error: $1"
+    },
+    "optionsSaved": {
+        "message": "Options saved."
+    },
+    "optionsServer": {
+        "message": "Server"
+    },
+    "optionsKey": {
+        "message": "Security key"
+    },
+    "optionsKeyHint": {
+        "message": "something long"
+    },
+    "optionsKeyGenerate": {
+        "message": "something long"
+    },
+    "optionsAutoConnect": {
+        "message": "Connect automatically"
+    },
+    "optionsQRCodeTitle": {
+        "message": "Link to client applications"
+    },
+    "optionsQRCodeHint": {
+        "message": "Connect client to page encoded in this QR Code"
+    },
+    "optionsSave": {
+        "message": "Save"
+    }
+}
