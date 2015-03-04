@@ -71,47 +71,64 @@
         Yamuca.Controllers.WebSocket = function (Yamuca) {
             var tries = 0,
                 isConnected = false,
+                isConnecting = false,
+                stopRetrying = false,
                 ws,
+                timeout,
                 credentials;
 
-            var connect = function () {
+            var connect = function (isReconnect) {
+                isConnecting = true;
+                if (!isReconnect) {
+                    stopRetrying = false;
+                    tries = 0;
+                }
+
                 if (!credentials) {
                     console.log('Yamuca: connections credentials are not set');
                     if (credentials === undefined) {
                         // retry in a second, if credentials are not yet set
-                        setTimeout(function () {
+                        timeout = setTimeout(function () {
                             connect();
                         }, 1000);
                     }
                     return;
                 }
 
-                chrome.extension.sendMessage("connecting");
+                if (!isReconnect) {
+                    chrome.extension.sendMessage("connecting");
+                }
                 console.log('Yamuca: Trying to connect...');
 
                 ws = new WebSocket(credentials.server);
                 ws.onopen = function (e) {
+                    isConnecting = false;
                     isConnected = true;
                     chrome.extension.sendMessage("connected");
                     console.log('Yamuca: Connected');
                     ws.send(JSON.stringify({key: credentials.key}));
-                    tries = 0;
                 }
 
                 ws.onerror = ws.close = function (e) {
+                    isConnecting = false;
                     isConnected = false;
-                    chrome.extension.sendMessage("disconnected");
+                    if (!e) {
+                        chrome.extension.sendMessage("disconnected");
+                    }
                     console.log('Yamuca: Disconnected');
 
                     if (e) { // on error
                         console.log('Yamuca: Error', e);
                         tries++;
-                        if (tries < 5) {
-                            setTimeout(connect, 1000);
+                        if (tries < 5 && !stopRetrying) {
+                            timeout = setTimeout(function () { connect(true); }, 1000);
                         } else {
-                            tries = 0;
-                            chrome.extension.sendMessage("giveup");
-                            console.log('Yamuca: to many errors, giving up', e);
+                            chrome.extension.sendMessage("disconnected");
+                            if (stopRetrying) {
+                                console.log('Yamuca: connection user canceled by user', e);
+                            } else {
+                                console.log('Yamuca: to many errors, giving up', e);
+                            }
                         }
                     }
                 };
@@ -142,11 +159,17 @@
             this.isConnected = function () {
                 return isConnected;
             }
+            this.isConnecting = function () {
+                return isConnecting;
+            }
 
             this.toggleConnectionState = function () {
                 if (isConnected) {
                     disconnect();
-                } else {
+                } else if (isConnecting) {
+                    stopRetrying = true;
+                    clearTimeout(timeout);
+                }  else {
                     connect();
                 }
             };

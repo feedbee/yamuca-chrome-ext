@@ -10,7 +10,8 @@
     "permissions": [
         "activeTab",
         "storage",
-        "declarativeContent"
+        "declarativeContent",
+        "alarms"
     ],
 
     "background" : {
@@ -32,8 +33,8 @@
     "page_action": {
         "default_title" : "This page can be remotely controlled by Yamuca",
         "default_icon": {
-            "19": "icons/icon-19.png",
-            "38": "icons/icon-38.png"
+            "19": "icons/icon-19-inactive.png",
+            "38": "icons/icon-38-inactive.png"
         }
     },
 
