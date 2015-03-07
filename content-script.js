@@ -32,10 +32,10 @@
                 sendKeyPress(112); // p
             };
             this.next = function () {
-                sendKeyPress(107); // k
+                sendKeyPress(108); // l
             };
             this.previous = function () {
-                sendKeyPress(108); // l
+                sendKeyPress(107); // k
             };
             this.volumeUp = function () {
                 sendKeyPress(43); // +
