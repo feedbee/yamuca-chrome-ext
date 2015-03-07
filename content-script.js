@@ -107,28 +107,26 @@
                     chrome.extension.sendMessage("connected");
                     console.log('Yamuca: Connected');
                     ws.send(JSON.stringify({key: credentials.key}));
-                }
+                };
 
-                ws.onerror = ws.close = function (e) {
+                ws.onclose = function (e) {
                     isConnecting = false;
                     isConnected = false;
-                    if (!e) {
-                        chrome.extension.sendMessage("disconnected");
-                    }
+                    chrome.extension.sendMessage("disconnected");
                     console.log('Yamuca: Disconnected');
+                };
 
-                    if (e) { // on error
-                        console.log('Yamuca: Error', e);
-                        tries++;
-                        if (tries < 5 && !stopRetrying) {
-                            timeout = setTimeout(function () { connect(true); }, 1000);
+                ws.onerror = function (e) {
+                    console.log('Yamuca: Error', e);
+                    tries++;
+                    if (tries < 5 && !stopRetrying) {
+                        timeout = setTimeout(function () { connect(true); }, 1000);
+                    } else {
+                        chrome.extension.sendMessage("disconnected");
+                        if (stopRetrying) {
+                            console.log('Yamuca: connection user canceled by user', e);
                         } else {
-                            chrome.extension.sendMessage("disconnected");
-                            if (stopRetrying) {
-                                console.log('Yamuca: connection user canceled by user', e);
-                            } else {
-                                console.log('Yamuca: to many errors, giving up', e);
-                            }
+                            console.log('Yamuca: to many errors, giving up', e);
                         }
                     }
                 };
