@@ -78,6 +78,9 @@
                 credentials;
 
             var connect = function (isReconnect) {
+                var interval,
+                    lastActivity;
+
                 isConnecting = true;
                 if (!isReconnect) {
                     stopRetrying = false;
@@ -101,15 +104,27 @@
                 console.log('Yamuca: Trying to connect...');
 
                 ws = new WebSocket(credentials.server);
-                ws.onopen = function (e) {
+                ws.onopen = function () {
+                    console.log('Yamuca: Open');
+                    lastActivity = Date.now();
                     isConnecting = false;
                     isConnected = true;
                     chrome.extension.sendMessage("connected");
                     console.log('Yamuca: Connected');
                     ws.send(JSON.stringify({key: credentials.key}));
+
+                    interval = setInterval(function () {
+                        if (lastActivity < Date.now() - 60 * 1000 * 2) { // 2 minutes
+                            console.log('Yamuca: Disconnect due to inactivity');
+                            ws.close();
+                            connect(); // reconnect
+                        }
+                    }, 2000);
                 };
 
                 ws.onclose = function (e) {
+                    console.log('Yamuca: Close', e);
+                    clearInterval(interval);
                     isConnecting = false;
                     isConnected = false;
                     chrome.extension.sendMessage("disconnected");
@@ -132,17 +147,26 @@
                 };
 
                 ws.onmessage = function (e) {
-                    chrome.extension.sendMessage({type: "message_received", message: e.data});
                     console.log('Yamuca: Message received: ' + e.data);
+                    lastActivity = Date.now();
+                    chrome.extension.sendMessage({type: "message_received", message: e.data});
+
                     var message = JSON.parse(e.data);
-                    if (typeof(message) == 'object' && message.command != undefined) {
-                        switch (message.command) {
-                            case 'togglePlay': Yamuca.togglePlay(); break;
-                            case 'next': Yamuca.next(); break;
-                            case 'previous': Yamuca.previous(); break;
-                            case 'volumeUp': Yamuca.volumeUp(); break;
-                            case 'volumeDown': Yamuca.volumeDown(); break;
-                            case 'mute': Yamuca.mute(); break;
+                    if (typeof(message) == 'object') {
+                        if (message.command != undefined) {
+                            switch (message.command) {
+                                case 'togglePlay': Yamuca.togglePlay(); break;
+                                case 'next': Yamuca.next(); break;
+                                case 'previous': Yamuca.previous(); break;
+                                case 'volumeUp': Yamuca.volumeUp(); break;
+                                case 'volumeDown': Yamuca.volumeDown(); break;
+                                case 'mute': Yamuca.mute(); break;
+                            }
+                        } else if (message.ping) {
+                            if (message.ping) {
+                                ws.send(JSON.stringify({ping: "pong"}));
+                                console.log('Ping received, pong sent');
+                            }
                         }
                     }
                 };
